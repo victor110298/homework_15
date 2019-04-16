@@ -1,15 +1,14 @@
-package jpa;
+package jpa.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.log4j.Log4j;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,8 +21,14 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+
 import java.util.HashSet;
 import java.util.Set;
+
+@MappedSuperclass
 @Log4j
 @Getter
 @Setter
@@ -31,8 +36,8 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "projects")
-public class Projects {
+@Table(name = "developers")
+public class Developers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,44 +46,62 @@ public class Projects {
     @Column(name = "name", length = 255)
     private String name;
 
-    @Column( name = "type", length = 255)
+    @Column(name = "surname", length = 255)
     private String type;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "projects")
-    private Set<Developers> developers=new HashSet<>();
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "sex")
+    private String sex;
+
+    @ManyToMany
+    @JoinTable(name = "devel_skill",
+            joinColumns = @JoinColumn(name = "devel_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id")
+    )
+    private Set<Skills> skills = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "devel_project",
+            joinColumns = @JoinColumn(name = "devel_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id")
+    )
+    private Set<Projects> project = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
-        log.info("Projects.onPrePersist()");
+        log.info("Developers.onPrePersist()");
     }
 
     @PostPersist
     public void postPersist() {
-        log.info("Projects.onPostPersist()");
+        log.info("Developers.onPostPersist()");
     }
 
     @PreUpdate
     public void preUpdate() {
-        log.info("Projects.onPreUpdate()");
+        log.info("Developers.onPreUpdate()");
     }
 
     @PostUpdate
     public void postUpdate() {
-        log.info("Projects.onPostUpdate()");
+        log.info("Developers.onPostUpdate()");
     }
 
     @PreRemove
     public void preRemove() {
-        log.info("Projects.onPreRemove()");
+        log.info("Developers.onPreRemove()");
     }
 
     @PostRemove
     public void postRemove() {
-        log.info("Projects.onPostRemove()");
+        log.info("Developers.onPostRemove()");
     }
 
     @PostLoad
     public void postLoad() {
-        log.info("Projects.onPostLoad()");
+        log.info("Developers.onPostLoad()");
     }
 }
+

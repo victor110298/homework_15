@@ -1,14 +1,16 @@
-package jpa;
+package jpa.entity;
 
+import jpa.entity.Companies;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,22 +23,21 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Log4j
+@MappedSuperclass
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "developers")
-public class Developers {
-
+@Table(name = "customers")
+public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -44,62 +45,44 @@ public class Developers {
     @Column(name = "name", length = 255)
     private String name;
 
-    @Column(name = "surname", length = 255)
-    private String type;
+    @Column(name = "Surname", length = 255)
+    private String surname;
 
-    @Column(name = "age")
-    private int age;
-
-    @Column(name = "sex")
-    private String sex;
-
-    @ManyToMany
-    @JoinTable(name = "devel_skill",
-            joinColumns = @JoinColumn(name = "devel_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id")
-    )
-    private Set<Skills> skills = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "devel_project",
-            joinColumns = @JoinColumn(name = "devel_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id")
-    )
-    private Set<Projects> project = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "customers")
+    private Set<Companies> companies = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
-        log.info("Developers.onPrePersist()");
+        log.info("Customers.onPrePersist()");
     }
 
     @PostPersist
     public void postPersist() {
-        log.info("Developers.onPostPersist()");
+        log.info("Customers.onPostPersist()");
     }
 
     @PreUpdate
     public void preUpdate() {
-        log.info("Developers.onPreUpdate()");
+        log.info("Customers.onPreUpdate()");
     }
 
     @PostUpdate
     public void postUpdate() {
-        log.info("Developers.onPostUpdate()");
+        log.info("Customers.onPostUpdate()");
     }
 
     @PreRemove
     public void preRemove() {
-        log.info("Developers.onPreRemove()");
+        log.info("Customers.onPreRemove()");
     }
 
     @PostRemove
     public void postRemove() {
-        log.info("Developers.onPostRemove()");
+        log.info("Customers.onPostRemove()");
     }
 
     @PostLoad
     public void postLoad() {
-        log.info("Developers.onPostLoad()");
+        log.info("Customers.onPostLoad()");
     }
 }
-

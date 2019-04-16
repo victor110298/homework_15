@@ -1,5 +1,6 @@
-package jpa;
+package jpa.entity;
 
+import jpa.entity.Developers;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
+
 import java.util.HashSet;
 import java.util.Set;
+
+@MappedSuperclass
 @Log4j
 @Getter
 @Setter
@@ -44,7 +49,7 @@ public class Skills {
     private String level;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "skills")
-    private Set<Developers> developers=new HashSet<>();
+    private Set<Developers> developers = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
