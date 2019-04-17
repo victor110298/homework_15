@@ -1,75 +1,47 @@
 package jpa.dao;
 
-import jpa.entity.Skills;
+import jpa.entity.Skill;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.EntityManager;
 
 @Log4j
-public class SkillDao {
+public class SkillDao implements Contract<Skill> {
     private EntityManager entityManager;
 
     public SkillDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public boolean insertSkill(Skills skill) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(skill);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean insert(Skill skill) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(skill);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
-    public boolean updateSkill(Skills skill) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(skill);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean update(Skill skill) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(skill);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
-    public Skills readSkill(Long id) {
-        try {
-            entityManager.getTransaction().begin();
-            Skills skill = entityManager.find(Skills.class, id);
-            entityManager.getTransaction().commit();
-            return skill;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return null;
-        }
+    @Override
+    public Skill read(Long id) {
+        entityManager.getTransaction().begin();
+        Skill skill = entityManager.find(Skill.class, id);
+        entityManager.getTransaction().commit();
+        return skill;
     }
 
-    public boolean deleteSkill(Long id) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.remove(entityManager.find(Skills.class, id));
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean delete(Long id) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.find(Skill.class, id));
+        entityManager.getTransaction().commit();
+        return true;
     }
 }

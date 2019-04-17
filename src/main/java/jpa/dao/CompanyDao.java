@@ -1,75 +1,46 @@
 package jpa.dao;
 
-import jpa.entity.Companies;
+import jpa.entity.Company;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.EntityManager;
 
 @Log4j
-public class CompanyDao {
+public class CompanyDao implements Contract<Company> {
     private EntityManager entityManager;
 
     public CompanyDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public boolean insertCompany(Companies company) {
-        try {
+    @Override
+    public boolean insert(Company company) {
             entityManager.getTransaction().begin();
             entityManager.persist(company);
             entityManager.getTransaction().commit();
             return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
     }
 
-    public boolean updateCompany(Companies company) {
-        try {
+    @Override
+    public boolean update(Company company) {
             entityManager.getTransaction().begin();
             entityManager.merge(company);
             entityManager.getTransaction().commit();
             return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
     }
 
-    public Companies readCompany(Long id) {
-        try {
+    @Override
+    public Company read(Long id) {
             entityManager.getTransaction().begin();
-            Companies company = entityManager.find(Companies.class, id);
+            Company company = entityManager.find(Company.class, id);
             entityManager.getTransaction().commit();
             return company;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
-    public boolean deleteCompany(Long id) {
-        try {
+    public boolean delete(Long id) {
             entityManager.getTransaction().begin();
-            entityManager.remove(entityManager.find(Companies.class, id));
+            entityManager.remove(entityManager.find(Company.class, id));
             entityManager.getTransaction().commit();
             return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
         }
     }
-}

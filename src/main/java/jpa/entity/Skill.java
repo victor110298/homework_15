@@ -1,11 +1,11 @@
 package jpa.entity;
 
-import jpa.entity.Developers;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.Column;
@@ -24,6 +24,8 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,55 +37,56 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Entity
-@Table(name = "projects")
-public class Projects {
-
+@Table(name = "skills")
+public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @Column(name = "name", length = 255)
-    private String name;
+    @Column(name = "language", length = 255)
+    private String language;
 
-    @Column(name = "type", length = 255)
-    private String type;
+    @Column(name = "level", length = 255)
+    @Enumerated(EnumType.STRING)
+    private SkillLevel skillLevel;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "projects")
-    private Set<Developers> developers = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "skills")
+    private Set<Developer> developers = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
-        log.info("Projects.onPrePersist()");
+        log.info("Skill.onPrePersist()");
     }
 
     @PostPersist
     public void postPersist() {
-        log.info("Projects.onPostPersist()");
+        log.info("Skill.onPostPersist()");
     }
 
     @PreUpdate
     public void preUpdate() {
-        log.info("Projects.onPreUpdate()");
+        log.info("Skill.onPreUpdate()");
     }
 
     @PostUpdate
     public void postUpdate() {
-        log.info("Projects.onPostUpdate()");
+        log.info("Skill.onPostUpdate()");
     }
 
     @PreRemove
     public void preRemove() {
-        log.info("Projects.onPreRemove()");
+        log.info("Skill.onPreRemove()");
     }
 
     @PostRemove
     public void postRemove() {
-        log.info("Projects.onPostRemove()");
+        log.info("Skill.onPostRemove()");
     }
 
     @PostLoad
     public void postLoad() {
-        log.info("Projects.onPostLoad()");
+        log.info("Skill.onPostLoad()");
     }
 }

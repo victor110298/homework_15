@@ -1,11 +1,6 @@
 package jpa.entity;
 
-import jpa.entity.Developers;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.Column;
@@ -28,61 +23,62 @@ import javax.persistence.MappedSuperclass;
 import java.util.HashSet;
 import java.util.Set;
 
-@MappedSuperclass
 @Log4j
+@MappedSuperclass
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Entity
-@Table(name = "skills")
-public class Skills {
+@Table(name = "customers")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @Column(name = "language", length = 255)
-    private String language;
+    @Column(name = "name", length = 255)
+    private String name;
 
-    @Column(name = "level", length = 255)
-    private String level;
+    @Column(name = "surname", length = 255)
+    private String surname;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "skills")
-    private Set<Developers> developers = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "customers")
+    private Set<Company> companies = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
-        log.info("Skills.onPrePersist()");
+        log.info("Customer.onPrePersist()");
     }
 
     @PostPersist
     public void postPersist() {
-        log.info("Skills.onPostPersist()");
+        log.info("Customer.onPostPersist()");
     }
 
     @PreUpdate
     public void preUpdate() {
-        log.info("Skills.onPreUpdate()");
+        log.info("Customer.onPreUpdate()");
     }
 
     @PostUpdate
     public void postUpdate() {
-        log.info("Skills.onPostUpdate()");
+        log.info("Customer.onPostUpdate()");
     }
 
     @PreRemove
     public void preRemove() {
-        log.info("Skills.onPreRemove()");
+        log.info("Customer.onPreRemove()");
     }
 
     @PostRemove
     public void postRemove() {
-        log.info("Skills.onPostRemove()");
+        log.info("Customer.onPostRemove()");
     }
 
     @PostLoad
     public void postLoad() {
-        log.info("Skills.onPostLoad()");
+        log.info("Customer.onPostLoad()");
     }
 }

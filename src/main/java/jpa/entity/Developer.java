@@ -1,11 +1,12 @@
 package jpa.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,8 @@ import javax.persistence.Table;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,13 +38,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Entity
 @Table(name = "developers")
-public class Developers {
+public class Developer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "name", length = 255)
     private String name;
@@ -50,58 +54,60 @@ public class Developers {
     private String type;
 
     @Column(name = "age")
-    private int age;
+    private Integer age;
 
     @Column(name = "sex")
-    private String sex;
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
+
 
     @ManyToMany
     @JoinTable(name = "devel_skill",
             joinColumns = @JoinColumn(name = "devel_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id")
     )
-    private Set<Skills> skills = new HashSet<>();
+    private Set<Skill> skills = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "devel_project",
             joinColumns = @JoinColumn(name = "devel_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id")
     )
-    private Set<Projects> project = new HashSet<>();
+    private Set<Project> project = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
-        log.info("Developers.onPrePersist()");
+        log.info("Developer.onPrePersist()");
     }
 
     @PostPersist
     public void postPersist() {
-        log.info("Developers.onPostPersist()");
+        log.info("Developer.onPostPersist()");
     }
 
     @PreUpdate
     public void preUpdate() {
-        log.info("Developers.onPreUpdate()");
+        log.info("Developer.onPreUpdate()");
     }
 
     @PostUpdate
     public void postUpdate() {
-        log.info("Developers.onPostUpdate()");
+        log.info("Developer.onPostUpdate()");
     }
 
     @PreRemove
     public void preRemove() {
-        log.info("Developers.onPreRemove()");
+        log.info("Developer.onPreRemove()");
     }
 
     @PostRemove
     public void postRemove() {
-        log.info("Developers.onPostRemove()");
+        log.info("Developer.onPostRemove()");
     }
 
     @PostLoad
     public void postLoad() {
-        log.info("Developers.onPostLoad()");
+        log.info("Developer.onPostLoad()");
     }
 }
 

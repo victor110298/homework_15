@@ -1,75 +1,47 @@
 package jpa.dao;
 
-import jpa.entity.Projects;
+import jpa.entity.Project;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.EntityManager;
 
 @Log4j
-public class ProjectDao {
+public class ProjectDao implements Contract<Project> {
     private EntityManager entityManager;
 
     public ProjectDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public boolean insertProject(Projects project) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(project);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean insert(Project project) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(project);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
-    public boolean updateProject(Projects project) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(project);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean update(Project project) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(project);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
-    public Projects readProject(Long id) {
-        try {
-            entityManager.getTransaction().begin();
-            Projects project = entityManager.find(Projects.class, id);
-            entityManager.getTransaction().commit();
-            return project;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return null;
-        }
+    @Override
+    public Project read(Long id) {
+        entityManager.getTransaction().begin();
+        Project project = entityManager.find(Project.class, id);
+        entityManager.getTransaction().commit();
+        return project;
     }
 
-    public boolean deleteProject(Long id) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.remove(entityManager.find(Projects.class, id));
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean delete(Long id) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.find(Project.class, id));
+        entityManager.getTransaction().commit();
+        return true;
     }
 }

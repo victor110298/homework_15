@@ -1,75 +1,47 @@
 package jpa.dao;
 
-import jpa.entity.Developers;
+import jpa.entity.Developer;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.EntityManager;
 
 @Log4j
-public class DeveloperDao {
+public class DeveloperDao implements Contract<Developer> {
     private EntityManager entityManager;
 
     public DeveloperDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public boolean insertDeveloper(Developers developers) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(developers);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean insert(Developer developer) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(developer);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
-    public boolean updateDeveloper(Developers developers) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(developers);
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean update(Developer developer) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(developer);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
-    public Developers readDeveloper(Long id) {
-        try {
-            entityManager.getTransaction().begin();
-            Developers developer = entityManager.find(Developers.class, id);
-            entityManager.getTransaction().commit();
-            return developer;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return null;
-        }
+    @Override
+    public Developer read(Long id) {
+        entityManager.getTransaction().begin();
+        Developer developer = entityManager.find(Developer.class, id);
+        entityManager.getTransaction().commit();
+        return developer;
     }
 
-    public boolean deleteDeveloper(Long id) {
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.remove(entityManager.find(Developers.class, id));
-            entityManager.getTransaction().commit();
-            return true;
-        } catch (RuntimeException e) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-            }
-            log.error(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean delete(Long id) {
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.find(Developer.class, id));
+        entityManager.getTransaction().commit();
+        return true;
     }
 }
