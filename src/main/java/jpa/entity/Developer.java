@@ -1,9 +1,6 @@
 package jpa.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Setter;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -33,25 +30,15 @@ import java.util.Set;
 
 @MappedSuperclass
 @Log4j
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@Data
 @Entity
 @Table(name = "developers")
-public class Developer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "name", length = 255)
-    private String name;
+public class Developer extends Model {
 
     @Column(name = "surname", length = 255)
-    private String type;
+    private String surname;
 
     @Column(name = "age")
     private Integer age;

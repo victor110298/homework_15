@@ -1,6 +1,8 @@
 package jpa.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.Column;
@@ -25,21 +27,12 @@ import java.util.Set;
 
 @Log4j
 @MappedSuperclass
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
 @Table(name = "customers")
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "name", length = 255)
-    private String name;
+public class Customer extends Model {
 
     @Column(name = "surname", length = 255)
     private String surname;

@@ -6,7 +6,7 @@ import lombok.extern.log4j.Log4j;
 import javax.persistence.EntityManager;
 
 @Log4j
-public class CompanyDao implements Contract<Company> {
+public class CompanyDao implements CompanyDaoI{
     private EntityManager entityManager;
 
     public CompanyDao(EntityManager entityManager) {

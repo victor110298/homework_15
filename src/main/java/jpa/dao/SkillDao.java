@@ -6,7 +6,7 @@ import lombok.extern.log4j.Log4j;
 import javax.persistence.EntityManager;
 
 @Log4j
-public class SkillDao implements Contract<Skill> {
+public class SkillDao implements SkillDaoI {
     private EntityManager entityManager;
 
     public SkillDao(EntityManager entityManager) {
